@@ -10,6 +10,8 @@ function App() {
   const [budget, setBudget] = useState(100);
   const [currentFourIndex, setCurrentIndex] = useState(0);
   const [plates, setPlates] = useState([]);
+  const [isEatenArray, setIsEatenArray] = useState([]);
+
   
 
   useEffect(() => {
@@ -17,16 +19,15 @@ function App() {
     .then((resp) => resp.json())
     .then((sushisArray) => {
       setSushis(sushisArray);
+      setIsEatenArray(Array(sushisArray.length).fill(false));
     })
 
   }, []);
-
-  const [isEatenArray, setIsEatenArray] = useState(Array(sushis.length).fill(false));
   
 
 
   function handleCanEat(price, key) {
-    if (budget - price >= 0) {
+    if (isEatenArray[key] === false && budget - price >= 0) {
       setBudget(budget - price);
 
       const updatedIsEatenArray = [...isEatenArray];
